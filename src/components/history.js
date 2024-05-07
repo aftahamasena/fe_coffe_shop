@@ -79,7 +79,7 @@ const History = () => {
                 </td>
                 <td className="border px-4 py-2">
                   {order.order_detail.reduce(
-                    (total, detail) => total + detail.price,
+                    (total, detail) => total + detail.price * detail.quantity,
                     0
                   )}
                 </td>

@@ -6,6 +6,7 @@ const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -18,19 +19,17 @@ const LoginAdmin = () => {
       );
       const { status, logged, message, token } = response.data;
       if (status && logged) {
-        setToken(token); // Simpan token ke state
+        setToken(token); 
         localStorage.setItem("adminToken", token);
-        window.location.href = "/Item"; // Redirect ke halaman admin
-      } else {
-        alert(message);
+        window.location.href = "/Item";
+        setError(message);
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Login failed. Please try again.");
+      setError("Login failed. Please try again.");
     }
   };
 
-  // Menggunakan interceptor Axios untuk menyertakan token pada setiap permintaan HTTP
   axios.interceptors.request.use(
     (config) => {
       config.headers.Authorization = `Bearer ${token}`;
@@ -81,7 +80,11 @@ const LoginAdmin = () => {
           >
             Login
           </button>
+          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </form>
+        <p className="text-center mt-8 text-sm">
+          Bukan admin ? <a href="/" className="text-blue-500 hover:text-blue-600">Masuk ke mode pengguna</a>
+        </p>
       </div>
     </div>
   );
